@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -211,6 +210,22 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
         return true;
     }
 
+    public void openMap() {
+        String address = "1 Sandton drive, Sandton";
+        Uri uri = new Uri.Builder()
+                .scheme("geo")
+                .path("0,0")
+                .query(address)
+                .build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(uri);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -219,9 +234,13 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
             mForecastAdapter.setWeatherData(null);
             loadWeatherData();
             return true;
+        } else if (id == R.id.action_map_open) {
+            openMap();
+
+            return true;
         }
 
-        // TODO (2) Launch the map when the map menu item is clicked
+        // Done (2) Launch the map when the map menu item is clicked
 
         return super.onOptionsItemSelected(item);
     }
